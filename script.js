@@ -3,6 +3,27 @@ console.log("Let's Play ROCK PAPER SCISSORS!..");
 let humanScore = 0;
 let computerScore = 0;
 
+const rock = document.createElement("button");
+rock.textContent = "ROCK";
+const paper = document.createElement('button');
+paper.textContent = 'PAPER';
+const scissors = document.createElement('button');
+scissors.textContent = 'SCISSORS';
+
+const para = document.createElement('p');
+para.textContent = '';
+const results = document.createElement('p');
+
+const div = document.querySelector('.player-buttons');
+div.appendChild(rock);
+div.appendChild(paper);
+div.appendChild(scissors);
+div.appendChild(para);
+div.appendChild(results);
+
+const roundResult = document.createElement('p');
+div.appendChild(roundResult);
+
 function getComputerChoice(){
     const choice = Math.floor( Math.random() * 3 ) + 1;
     let compChoice = '';
@@ -17,63 +38,89 @@ function getComputerChoice(){
     return compChoice;
 }
 
-function getHumanChoice(){
-    const choice = prompt("Choose Rock, Paper or Scissors:");
-    return choice.toUpperCase();
-}
 
 function playRound(humanChoice, computerChoice){
+
     if(humanChoice === "ROCK" && computerChoice === "PAPER"){
-        console.log("You lose, PAPER beats ROCK");
+        roundResult.textContent = "You lose, PAPER beats ROCK";
         computerScore++;
     }
     else if(humanChoice === "ROCK" && computerChoice === "SCISSORS"){
-        console.log("You win, ROCK beats SCISSORS");
+        roundResult.textContent = "You win, ROCK beats SCISSORS";
         humanScore++;
     }
     else if(humanChoice === "PAPER" && computerChoice === "SCISSORS"){
-        console.log("You lose, SCISSORS beats PAPER");
+        roundResult.textContent = "You lose, SCISSORS beats PAPER";
         computerScore++;
     }
     else if(humanChoice === "PAPER" && computerChoice === "ROCK"){
-        console.log("You win, PAPER beats ROCK");
+        roundResult.textContent = "You win, PAPER beats ROCK";
         humanScore++;
     }
     else if(humanChoice === "SCISSORS" && computerChoice === "ROCK"){
-        console.log("You lose, ROCK beats SCISSORS");
+        roundResult.textContent = "You lose, ROCK beats SCISSORS";
         computerScore++;
     }
     else if(humanChoice === "SCISSORS" && computerChoice === "PAPER"){
-        console.log("You win, SCISSORS beats PAPER");
+        roundResult.textContent = "You win, SCISSORS beats PAPER";
         computerScore++;
     }
     else{
-        console.log(`Draw, computer chose ${computerChoice} and you also chose ${humanChoice} `);
+        roundResult.textContent = `Draw, computer chose ${computerChoice} and you also chose ${humanChoice} `;
         computerScore++;
         humanScore++;
     }
 }
 
-function playGame(){
-    let playTimes = 0;
-
-    while(playTimes<5){
-        playRound(getHumanChoice(), getComputerChoice());
-        console.log("Copmuter Score: " + computerScore);
-        console.log("Your Score: " + humanScore);
-        playTimes++;
+function checkScore(){
+    if(computerScore >= 5 || humanScore >= 5){
+        return true;
     }
-
-    if(computerScore > humanScore){
-        console.log(`Computer wins game by ${computerScore} - ${humanScore}`);
-    }
-    else if(computerScore < humanScore){
-        console.log(`You win the game by ${humanScore} - ${computerScore}`);
-    }
-    else{
-        console.log(`Game drawn by ${humanScore} - ${computerScore}`);
-    }
-
+    return false;
 }
 
-playGame();
+function showResults(){
+
+    if(computerScore > humanScore){
+        results.textContent = `Computer wins game by ${computerScore} - ${humanScore}`;
+    }
+    else if(computerScore < humanScore){
+        results.textContent = `You win the game by ${humanScore} - ${computerScore}`;
+    }
+    else{
+        results.textContent = `Game drawn by ${humanScore} - ${computerScore}`;
+    }
+}
+
+rock.addEventListener('click', function(){
+    if(checkScore()){
+        showResults();
+        window.stop();
+    }
+    else{
+        playRound("ROCK", getComputerChoice());
+        para.textContent = `Computer Score - ${computerScore} \n Human SCore - ${humanScore}`;
+    }
+});
+
+paper.addEventListener('click', function(){
+    if(checkScore()){
+        showResults();
+        window.stop();
+    }
+    else{
+        playRound("PAPER", getComputerChoice());
+        para.textContent = `Computer Score - ${computerScore} \n Human SCore - ${humanScore}`;
+    }
+});
+
+scissors.addEventListener('click', function(){
+    if(checkScore){
+        showResults();
+        window.stop();
+    }
+    else{
+        playRound("SCISSORS", getComputerChoice());
+        para.textContent = `Computer Score - ${computerScore} \n Human SCore - ${humanScore}`;
+    }
+});
